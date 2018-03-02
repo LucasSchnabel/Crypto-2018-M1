@@ -26,7 +26,8 @@ public class Main {
 		BigInteger r = getRandomBetween(new BigInteger("2"), p);
 		BigInteger y = expMod(gx, r, p);
 		BigInteger message = new BigInteger(m.getBytes());
-		BigInteger c = message.multiply(y).mod(p);
+		BigInteger c = y.multiply(message);
+		c = c.mod(p);
 		BigInteger b = expMod(g, r, p);
 		BigInteger[] res = {c,b};
 		return res;
@@ -34,7 +35,9 @@ public class Main {
 	
 	public String decrypt(BigInteger p,BigInteger c, BigInteger b, BigInteger x) {
 		BigInteger d = expMod(b, x, p);
-		BigInteger decrypt = c.multiply(d).modInverse(p);
+		d = d.modInverse(p);
+		BigInteger decrypt = d.multiply(c);
+		decrypt = decrypt.mod(p);
 		return new String(decrypt.toByteArray());
 	}
 	
