@@ -84,12 +84,17 @@ public class Main {
 		File file = new File("test.txt");
 		PrintWriter pw = new PrintWriter(file);
 		//Question 3 
+		pw.println();
+		pw.println("***********************QUESTION 3************************");
+		
 		BigInteger a,pgcd;
 		BigInteger[] euclide;
 		for(int i = 1;i<10000;i++){
 			a = new BigInteger(Integer.toString(i));
 			euclide = m.euclide(a, p);
 			pgcd = a.multiply(euclide[0]).add(p.multiply(euclide[1]));
+			pw.println("Fonction Euclide: a="+a+",p="+p);
+			pw.println("r avec Euclide:"+pgcd+" : r avec fonction gcd : "+a.gcd(p));
 			if(!pgcd.equals(a.gcd(p))){
 				System.out.println("erreur : "+i);
 				break;
@@ -144,7 +149,7 @@ public class Main {
 		BigInteger b = encryptM1[1].multiply(encryptM2[1]);
 		b = b.mod(p);
 		String res = m.decrypt(p, c, b, key[0]);
-		pw.println(res);
+		
 		BigInteger decryptM1 = new BigInteger(m1.getBytes());
 		BigInteger decryptM2 = new BigInteger(m2.getBytes());
 		BigInteger decryptM = new BigInteger(res.getBytes());
