@@ -93,7 +93,7 @@ public class Main {
 			a = new BigInteger(Integer.toString(i));
 			euclide = m.euclide(a, p);
 			pgcd = a.multiply(euclide[0]).add(p.multiply(euclide[1]));
-			pw.println("Fonction Euclide: a="+a+",p="+p);
+			pw.println("Fonction Euclide: a="+a);
 			pw.println("r avec Euclide:"+pgcd+" : r avec fonction gcd : "+a.gcd(p));
 			if(!pgcd.equals(a.gcd(p))){
 				System.out.println("erreur : "+i);
