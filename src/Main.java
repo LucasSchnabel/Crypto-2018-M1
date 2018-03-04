@@ -7,6 +7,24 @@ import java.util.ArrayList;
 
 public class Main {
 
+	public BigInteger[] euclide(BigInteger a, BigInteger p){
+		BigInteger[] q = {null,null};
+		BigInteger u,v;
+		if(p.equals(BigInteger.ZERO)){
+			q[0] = BigInteger.ONE;
+			q[1] = BigInteger.ZERO;
+			return q;
+		}
+		q = euclide(p,a.mod(p));
+		u = q[1];
+		v = q[0];
+		q[0] = u;
+		q[1] = v.subtract(u.multiply(a.divide(p)));
+		
+		//BigInteger[] res = {u,v}; 
+		return q;
+	}
+	
 	public BigInteger expMod(BigInteger g, BigInteger a, BigInteger p) {
 		return g.modPow(a, p);
 	}
@@ -65,6 +83,18 @@ public class Main {
 		// Fichier de sortie
 		File file = new File("test.txt");
 		PrintWriter pw = new PrintWriter(file);
+		//Question 3 
+		BigInteger a,pgcd;
+		BigInteger[] euclide;
+		for(int i = 1;i<10000;i++){
+			a = new BigInteger(Integer.toString(i));
+			euclide = m.euclide(a, p);
+			pgcd = a.multiply(euclide[0]).add(p.multiply(euclide[1]));
+			if(!pgcd.equals(a.gcd(p))){
+				System.out.println("erreur : "+i);
+				break;
+			}
+		}
 		// Question4
 		pw.println();
 		pw.println("***********************QUESTION 4************************");
@@ -84,7 +114,7 @@ public class Main {
 			BigInteger[] key = m.keygen(p, g);
 			BigInteger[] eM = m.encrypt(p, g, key[1], message);
 			String res = m.decrypt(p, eM[0], eM[1], key[0]);
-			pw.println("r : " + eM[2] + ", Message de départ '" + message + "', Décrypté '" + res + "'");
+			pw.println("r : " + eM[2] + ", Message de depart '" + message + "', Decrypte '" + res + "'");
 			if (r.contains(eM[2])) {
 				compteurR++;
 			} else
@@ -99,7 +129,9 @@ public class Main {
 		pw.println("***********************QUESTION 6************************");
 		String m1 = "Winter";
 		String m2 = "IsComing!";
-
+		pw.println(m1);
+		pw.println(m2);
+		
 		BigInteger[] key = m.keygen(p, g);
 		BigInteger[] encryptM1 = m.encrypt(p, g, key[1], m1);
 		BigInteger[] encryptM2 = m.encrypt(p, g, key[1], m2);
@@ -109,10 +141,10 @@ public class Main {
 		c = c.mod(p);
 
 		//B
-		BigInteger b = encryptM1[1].multiply(encryptM2[0]).mod(p);
+		BigInteger b = encryptM1[1].multiply(encryptM2[1]);
 		b = b.mod(p);
 		String res = m.decrypt(p, c, b, key[0]);
-
+		pw.println(res);
 		BigInteger decryptM1 = new BigInteger(m1.getBytes());
 		BigInteger decryptM2 = new BigInteger(m2.getBytes());
 		BigInteger decryptM = new BigInteger(res.getBytes());
